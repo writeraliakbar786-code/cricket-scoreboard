@@ -49,10 +49,10 @@
 
         .glass-overlay {
             position: relative;
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.94), rgba(30, 41, 59, 0.92));
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(30, 41, 59, 0.94));
             backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 30px rgba(251, 191, 36, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(251, 191, 36, 0.12);
         }
 
         /* Dynamic Split Flag Background Overlay */
@@ -61,7 +61,7 @@
             inset: 0;
             pointer-events: none;
             z-index: 0;
-            opacity: 0.18;
+            opacity: 0.2;
             display: flex;
             overflow: hidden;
             border-radius: 1rem;
@@ -109,7 +109,6 @@
             100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
         }
 
-        /* Animated boundary & event visual triggers */
         .anim-pop {
             animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
@@ -124,28 +123,6 @@
     </style>
 </head>
 <body class="p-3 md:p-6 min-h-screen flex flex-col justify-between">
-
-    <!-- HEADER BAR -->
-    <header id="appHeader" class="mb-4 flex flex-wrap justify-between items-center bg-slate-900/90 backdrop-blur-md p-4 rounded-2xl border border-slate-800 shadow-xl gap-3">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-amber-500 flex items-center justify-center font-black text-slate-950 text-xl shadow-lg">
-                <i class="fa-solid fa-cricket-bat-ball"></i>
-            </div>
-            <div>
-                <h1 class="font-extrabold text-lg text-white tracking-wide">Pitch Ke Khiladi <span class="text-xs font-normal text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">Broadcast Engine</span></h1>
-                <p class="text-xs text-slate-400">Live Cricket Scoreboard & Overlay Manager</p>
-            </div>
-        </div>
-
-        <div class="flex items-center gap-2">
-            <button onclick="toggleCleanOverlayMode()" id="overlayToggleBtn" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold py-2 px-3.5 rounded-xl transition shadow flex items-center gap-1.5">
-                <i class="fa-solid fa-expand"></i> Toggle Full Overlay View
-            </button>
-            <button onclick="toggleChromaBg()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold py-2 px-3.5 rounded-xl transition shadow flex items-center gap-1.5">
-                <i class="fa-solid fa-palette"></i> Transparent Card
-            </button>
-        </div>
-    </header>
 
     <!-- MAIN BROADCAST SCORE GRAPHIC BOARD -->
     <section class="mb-6">
@@ -201,28 +178,43 @@
                 <!-- MAIN SCORE CARD BODY -->
                 <div class="p-4 md:p-5 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
                     
-                    <!-- BATTING TEAM SCORE WITH FLAG & EMBLEM -->
-                    <div class="md:col-span-4 flex items-center gap-3.5">
-                        <div class="relative w-14 h-14 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 flex flex-col items-center justify-center shadow-lg overflow-hidden group">
-                            <img id="iconBatFlag" src="https://flagcdn.com/w80/in.png" class="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:opacity-40 transition-opacity" alt="Batting Team Flag">
-                            <span id="displayBatTeamShort" class="relative z-10 font-black text-xl text-amber-400 tracking-wider glow-gold">IND</span>
-                            <span class="relative z-10 text-[9px] font-bold text-emerald-400 tracking-widest bg-slate-950/80 px-1 rounded">BAT</span>
-                        </div>
-                        <div>
-                            <div class="flex items-center gap-2">
-                                <h3 id="displayBatTeam" class="text-xl font-black tracking-wide text-white">INDIA</h3>
+                    <!-- BATTING TEAM SCORE & REFINED PARTNERSHIP / LAST WICKET SECTION -->
+                    <div class="md:col-span-4 flex flex-col justify-center gap-2.5">
+                        <div class="flex items-center gap-3.5">
+                            <div class="relative w-14 h-14 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 flex flex-col items-center justify-center shadow-lg overflow-hidden group">
+                                <img id="iconBatFlag" src="https://flagcdn.com/w80/in.png" class="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:opacity-40 transition-opacity" alt="Batting Team Flag">
+                                <span id="displayBatTeamShort" class="relative z-10 font-black text-xl text-amber-400 tracking-wider glow-gold">IND</span>
+                                <span class="relative z-10 text-[9px] font-bold text-emerald-400 tracking-widest bg-slate-950/80 px-1 rounded">BAT</span>
                             </div>
-                            <div class="flex items-baseline gap-2 mt-0.5">
-                                <span id="displayScore" class="text-4xl md:text-5xl font-black text-white tracking-tight anim-pop">0<span class="text-slate-500 font-normal">/</span>0</span>
-                                <span class="text-sm font-bold text-slate-400">
-                                    (<span id="displayOvers">0.0</span> / <span id="displayMaxOvers">50.0</span> ov)
-                                </span>
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <h3 id="displayBatTeam" class="text-xl font-black tracking-wide text-white">INDIA</h3>
+                                </div>
+                                <div class="flex items-baseline gap-2 mt-0.5">
+                                    <span id="displayScore" class="text-4xl md:text-5xl font-black text-white tracking-tight anim-pop">0<span class="text-slate-500 font-normal">/</span>0</span>
+                                    <span class="text-sm font-bold text-slate-400">
+                                        (<span id="displayOvers">0.0</span> / <span id="displayMaxOvers">50.0</span> ov)
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 🌟 PERFECTLY FORMATTED PARTNERSHIP & LAST WICKET (Name on top, stats below so nothing hides) -->
+                        <div class="grid grid-cols-2 gap-2 text-[11px]">
+                            <div class="bg-slate-950/90 border border-amber-500/40 px-2 py-1.5 rounded-xl shadow flex flex-col justify-center">
+                                <span class="text-slate-400 font-semibold flex items-center gap-1 text-[10px]"><i class="fa-solid fa-people-arrows text-amber-400"></i> Partnership:</span>
+                                <span id="displayPartnership" class="text-amber-300 font-bold font-mono text-xs mt-0.5">0 (0b)</span>
+                            </div>
+                            <div class="bg-slate-950/90 border border-slate-700 px-2 py-1.5 rounded-xl shadow flex flex-col justify-center overflow-hidden">
+                                <span class="text-slate-400 font-semibold flex items-center gap-1 text-[10px]"><i class="fa-solid fa-user-slash text-red-400"></i> Last Wicket:</span>
+                                <span id="displayLastWicket" class="text-slate-200 font-medium font-mono text-[11px] whitespace-nowrap overflow-hidden text-ellipsis mt-0.5">None</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- ACTIVE BATSMEN ON CREASE -->
+                    <!-- ACTIVE BATSMEN & VIDEO STREAM ZONE -->
                     <div class="md:col-span-5 border-t md:border-t-0 md:border-l border-slate-800/80 pt-3 md:pt-0 md:pl-5 space-y-2">
+                        
                         <!-- Striker -->
                         <div class="flex justify-between items-center bg-slate-800/60 backdrop-blur-md px-3 py-1.5 rounded-xl border border-slate-700/80 shadow-md">
                             <div class="flex items-center gap-2 truncate">
@@ -237,6 +229,17 @@
                                     <span class="text-slate-400 text-[11px]"> (<span id="displayStrikerBalls">0</span>b)</span>
                                 </div>
                                 <span class="text-[10px] text-slate-400 bg-slate-900/90 px-1.5 py-0.5 rounded border border-slate-800">SR: <span id="displayStrikerSR" class="text-slate-200 font-bold">0.0</span></span>
+                            </div>
+                        </div>
+
+                        <!-- VIDEO / STREAM ZONE -->
+                        <div class="relative bg-slate-950/90 border border-amber-500/40 rounded-xl overflow-hidden shadow-inner h-14 flex items-center justify-center">
+                            <div id="videoContainer" class="absolute inset-0 w-full h-full flex items-center justify-center">
+                                <video id="displayLiveVideo" class="w-full h-full object-cover hidden" autoplay loop muted playsinline></video>
+                                <div id="videoPlaceholderText" class="flex items-center gap-2 text-xs text-amber-300 font-semibold">
+                                    <i class="fa-solid fa-video text-amber-400 animate-pulse"></i>
+                                    <span>Match Stream / Reaction Zone</span>
+                                </div>
                             </div>
                         </div>
 
@@ -295,7 +298,7 @@
     <section id="controlPanelSection" class="bg-slate-900/95 backdrop-blur-xl p-5 rounded-2xl border border-slate-800 shadow-2xl space-y-5">
         <div class="flex justify-between items-center border-b border-slate-800 pb-3">
             <h2 class="text-sm font-extrabold uppercase tracking-widest text-slate-200 flex items-center gap-2">
-                <i class="fa-solid fa-sliders text-amber-400"></i> Match Control Dashboard
+                <i class="fa-solid fa-sliders text-amber-400"></i> Pitch Ke Khiladi - Master Control Dashboard
             </h2>
             <div class="flex items-center gap-2">
                 <button onclick="undoLastBall()" class="bg-slate-800 hover:bg-slate-700 text-amber-400 text-xs font-bold py-1.5 px-3 rounded-lg border border-slate-700 transition">
@@ -341,6 +344,18 @@
                 <button onclick="startSecondInningsReset()" class="w-full bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white font-extrabold text-xs py-2 px-3 rounded-lg shadow-lg border border-amber-400/30 transition flex items-center justify-center gap-1.5">
                     <i class="fa-solid fa-play"></i> Start 2nd Innings (Reset Score)
                 </button>
+            </div>
+        </div>
+
+        <!-- VIDEO UPLOAD CONTROLS -->
+        <div class="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80 space-y-2">
+            <label class="text-[11px] font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-video"></i> Live Stream Video / Media Source
+            </label>
+            <div class="flex gap-2">
+                <input type="file" id="uploadLiveVideo" accept="video/*" onchange="handleVideoUpload(event)" class="w-1/2 text-[10px] text-slate-400 bg-slate-900 border border-slate-800 rounded p-1 cursor-pointer">
+                <input type="text" id="inputVideoUrl" placeholder="Direct Video URL (.mp4)" class="w-1/2 bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-white text-xs">
+                <button onclick="applyVideoUrl()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-3 py-1.5 rounded text-xs">Load</button>
             </div>
         </div>
 
@@ -449,7 +464,6 @@
 
     <!-- STATE ENGINE & JS LOGIC -->
     <script>
-        // COUNTRY FLAG MAPPING ENGINE
         const FLAG_MAP = {
             "INDIA": "in", "IND": "in",
             "NEW ZEALAND": "nz", "NZ": "nz",
@@ -471,6 +485,8 @@
             rightBg: null
         };
 
+        let lastWicketInfo = "None";
+
         function handleImageUpload(event, key) {
             const file = event.target.files[0];
             if (file) {
@@ -483,10 +499,38 @@
             }
         }
 
+        function handleVideoUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const videoUrl = URL.createObjectURL(file);
+                updateVideoDisplay(videoUrl);
+            }
+        }
+
+        function applyVideoUrl() {
+            const url = document.getElementById('inputVideoUrl').value.trim();
+            if (url) {
+                updateVideoDisplay(url);
+            }
+        }
+
+        function updateVideoDisplay(src) {
+            const videoEl = document.getElementById('displayLiveVideo');
+            const placeholderEl = document.getElementById('videoPlaceholderText');
+            if (src) {
+                videoEl.src = src;
+                videoEl.classList.remove('hidden');
+                placeholderEl.classList.add('hidden');
+                videoEl.play().catch(e => console.log("Auto-play prevented:", e));
+            } else {
+                videoEl.classList.add('hidden');
+                placeholderEl.classList.remove('hidden');
+            }
+        }
+
         function getFlagUrl(teamName, teamShort) {
             const cleanName = (teamName || "").toUpperCase().trim();
             const cleanShort = (teamShort || "").toUpperCase().trim();
-            
             const code = FLAG_MAP[cleanName] || FLAG_MAP[cleanShort] || "un";
             return `https://flagcdn.com/w160/${code}.png`;
         }
@@ -529,6 +573,8 @@
             displayTournament: document.getElementById('displayTournament'),
             displayFormatBadge: document.getElementById('displayFormatBadge'),
             displayInningsBadge: document.getElementById('displayInningsBadge'),
+            displayPartnership: document.getElementById('displayPartnership'),
+            displayLastWicket: document.getElementById('displayLastWicket'),
             displayBatTeam: document.getElementById('displayBatTeam'),
             displayBatTeamShort: document.getElementById('displayBatTeamShort'),
             displayBowlTeam: document.getElementById('displayBowlTeam'),
@@ -710,6 +756,7 @@
 
             state.thisOverBalls = [];
             state.historyStack = [];
+            lastWicketInfo = "None";
 
             updateUI();
         }
@@ -756,9 +803,19 @@
             state.bowler.runsConceded += runVal;
 
             if (type === 'wicket') {
+                // AUTOMATIC LAST WICKET CAPTURE
+                lastWicketInfo = `${state.striker.name} ${state.striker.runs}(${state.striker.balls}b)`;
+                
                 state.wickets += 1;
                 state.bowler.wickets += 1;
                 state.striker.balls += 1;
+                
+                state.striker.runs = 0;
+                state.striker.balls = 0;
+                state.striker.fours = 0;
+                state.striker.sixes = 0;
+                state.striker.name = "New Batter";
+                elements.inputStriker.value = "New Batter";
             } else if (isLegal) {
                 state.striker.runs += runVal;
                 state.striker.balls += 1;
@@ -835,13 +892,16 @@
                 state.totalRuns = 0;
                 state.wickets = 0;
                 state.legalBallsBowled = 0;
-                state.striker = { name: state.striker.name, runs: 0, balls: 0, fours: 0, sixes: 0 };
-                state.nonStriker = { name: state.nonStriker.name, runs: 0, balls: 0, fours: 0, sixes: 0 };
+                state.striker = { name: "Rohit Sharma", runs: 0, balls: 0, fours: 0, sixes: 0 };
+                state.nonStriker = { name: "Shubman Gill", runs: 0, balls: 0, fours: 0, sixes: 0 };
                 state.bowler = { name: state.bowler.name, legalBalls: 0, runsConceded: 0, wickets: 0, dots: 0, extras: 0 };
                 state.thisOverBalls = [];
                 state.historyStack = [];
                 state.targetRuns = null;
                 state.isInnings2 = false;
+                lastWicketInfo = "None";
+                elements.inputStriker.value = "Rohit Sharma";
+                elements.inputNonStriker.value = "Shubman Gill";
                 updateUI();
             }
         }
@@ -853,7 +913,6 @@
         }
 
         function updateUI() {
-            // Update Dynamic Flags & Custom Uploaded Images
             const batFlagUrl = customImages.batLogo || getFlagUrl(state.battingTeam, state.battingTeamShort);
             const bowlFlagUrl = customImages.bowlLogo || getFlagUrl(state.bowlingTeam, state.bowlingTeamShort);
 
@@ -869,6 +928,11 @@
             elements.displayFormatBadge.innerText = `${state.format} (${state.maxOvers} Ov)`;
             elements.displayInningsBadge.innerText = state.isInnings2 ? "2nd Innings" : "1st Innings";
 
+            const pshipRuns = state.striker.runs + state.nonStriker.runs;
+            const pshipBalls = state.striker.balls + state.nonStriker.balls;
+            elements.displayPartnership.innerText = `${pshipRuns} (${pshipBalls}b)`;
+            elements.displayLastWicket.innerText = lastWicketInfo;
+
             elements.displayBatTeam.innerText = state.battingTeam;
             elements.displayBatTeamShort.innerText = state.battingTeamShort;
             elements.displayBowlTeam.innerText = state.bowlingTeam;
@@ -882,7 +946,6 @@
             const crr = oversDecimal > 0 ? (state.totalRuns / oversDecimal).toFixed(2) : "0.00";
             elements.valCRR.innerText = crr;
 
-            // Target & Required Run Rate Logic
             if (state.isInnings2 && state.targetRuns) {
                 const runsNeeded = state.targetRuns - state.totalRuns;
                 const ballsRemaining = state.maxLegalBalls - state.legalBallsBowled;
@@ -890,9 +953,11 @@
                 elements.valTargetShow.innerText = state.targetRuns;
 
                 if (runsNeeded <= 0) {
-                    elements.displayTargetStatus.innerText = `${state.battingTeam} WON THE MATCH! 🎉`;
+                    const wicketsRemaining = 10 - state.wickets;
+                    elements.displayTargetStatus.innerText = `${state.battingTeam} WON BY ${wicketsRemaining} WICKET${wicketsRemaining > 1 ? 'S' : ''} 🎉`;
                 } else if (ballsRemaining <= 0 || state.wickets >= 10) {
-                    elements.displayTargetStatus.innerText = `${state.bowlingTeam} WON THE MATCH! 🎉`;
+                    const runsDefended = state.targetRuns - 1 - state.totalRuns;
+                    elements.displayTargetStatus.innerText = `${state.bowlingTeam} WON BY ${runsDefended} RUN${runsDefended > 1 ? 'S' : ''} 🎉`;
                 } else {
                     elements.displayTargetStatus.innerText = `TARGET: ${state.targetRuns} | NEED ${runsNeeded} RUNS OFF ${ballsRemaining} BALLS`;
                     const rrr = (ballsRemaining > 0) ? ((runsNeeded / ballsRemaining) * 6).toFixed(2) : "0.00";
@@ -905,7 +970,6 @@
                 elements.displayRRRBox.classList.add('hidden');
             }
 
-            // Striker Stats
             elements.displayStriker.innerText = state.striker.name;
             elements.displayStrikerRuns.innerText = state.striker.runs;
             elements.displayStrikerBalls.innerText = state.striker.balls;
@@ -914,7 +978,6 @@
             const strikerSR = state.striker.balls > 0 ? ((state.striker.runs / state.striker.balls) * 100).toFixed(1) : "0.0";
             elements.displayStrikerSR.innerText = strikerSR;
 
-            // Non-Striker Stats
             elements.displayNonStriker.innerText = state.nonStriker.name;
             elements.displayNonStrikerRuns.innerText = state.nonStriker.runs;
             elements.displayNonStrikerBalls.innerText = state.nonStriker.balls;
@@ -923,7 +986,6 @@
             const nonStrikerSR = state.nonStriker.balls > 0 ? ((state.nonStriker.runs / state.nonStriker.balls) * 100).toFixed(1) : "0.0";
             elements.displayNonStrikerSR.innerText = nonStrikerSR;
 
-            // Bowler Stats
             elements.displayBowler.innerText = state.bowler.name;
             elements.displayBowlerRuns.innerText = state.bowler.runsConceded;
             elements.displayBowlerWickets.innerText = state.bowler.wickets;
@@ -935,7 +997,6 @@
             const bowlerEcon = bowlerOversDecimal > 0 ? (state.bowler.runsConceded / bowlerOversDecimal).toFixed(2) : "0.00";
             elements.displayBowlerEcon.innerText = bowlerEcon;
 
-            // Over Ball Timeline
             if (state.thisOverBalls.length === 0) {
                 elements.displayThisOver.innerHTML = `<span class="text-slate-600 text-xs italic">Waiting for delivery...</span>`;
             } else {
@@ -943,27 +1004,6 @@
                     `<span class="w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs border ${b.bgClass}">${b.text}</span>`
                 ).join('');
             }
-        }
-
-        function toggleCleanOverlayMode() {
-            const controlSection = document.getElementById('controlPanelSection');
-            const appHeader = document.getElementById('appHeader');
-            const overlayToggleBtn = document.getElementById('overlayToggleBtn');
-
-            if (controlSection.classList.contains('hidden')) {
-                controlSection.classList.remove('hidden');
-                appHeader.classList.remove('hidden');
-                overlayToggleBtn.innerHTML = `<i class="fa-solid fa-expand"></i> Clean Overlay Mode`;
-            } else {
-                controlSection.classList.add('hidden');
-                appHeader.classList.add('hidden');
-                overlayToggleBtn.innerHTML = `<i class="fa-solid fa-compress"></i> Show Controls`;
-            }
-        }
-
-        function toggleChromaBg() {
-            const overlay = document.getElementById('broadcastOverlay');
-            overlay.classList.toggle('transparent-bg');
         }
     </script>
 </body>
