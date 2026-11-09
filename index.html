@@ -122,10 +122,10 @@
         }
     </style>
 </head>
-<body class="p-3 md:p-6 min-h-screen flex flex-col justify-between">
+<body class="p-2 md:p-6 min-h-screen flex flex-col justify-between">
 
-    <!-- MAIN BROADCAST SCORE GRAPHIC BOARD -->
-    <section class="mb-6">
+    <!-- 🌟 ONLY THIS TOP SCOREBOARD SECTION WILL SHOW IN LIVE STREAMING (PRISM / OBS) -->
+    <section id="liveBroadcastScoreCard" class="w-full">
         <div id="broadcastOverlay" class="glass-overlay rounded-2xl overflow-hidden text-white transition-all duration-300">
             
             <!-- DYNAMIC DUAL TEAM SPLIT FLAG BACKGROUND -->
@@ -178,7 +178,7 @@
                 <!-- MAIN SCORE CARD BODY -->
                 <div class="p-4 md:p-5 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
                     
-                    <!-- BATTING TEAM SCORE & REFINED PARTNERSHIP / LAST WICKET SECTION -->
+                    <!-- BATTING TEAM SCORE & PARTNERSHIP / LAST WICKET SECTION -->
                     <div class="md:col-span-4 flex flex-col justify-center gap-2.5">
                         <div class="flex items-center gap-3.5">
                             <div class="relative w-14 h-14 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 flex flex-col items-center justify-center shadow-lg overflow-hidden group">
@@ -199,7 +199,7 @@
                             </div>
                         </div>
 
-                        <!-- 🌟 PERFECTLY FORMATTED PARTNERSHIP & LAST WICKET (Name on top, stats below so nothing hides) -->
+                        <!-- PARTNERSHIP & LAST WICKET BADGES -->
                         <div class="grid grid-cols-2 gap-2 text-[11px]">
                             <div class="bg-slate-950/90 border border-amber-500/40 px-2 py-1.5 rounded-xl shadow flex flex-col justify-center">
                                 <span class="text-slate-400 font-semibold flex items-center gap-1 text-[10px]"><i class="fa-solid fa-people-arrows text-amber-400"></i> Partnership:</span>
@@ -294,7 +294,14 @@
         </div>
     </section>
 
-    <!-- FULL VISIBLE BROADCAST CONTROL PANEL SECTION -->
+    <!-- HIDE/SHOW TOGGLE FOR STREAMING VS CONTROL -->
+    <div class="my-4 flex justify-center">
+        <button onclick="toggleControlPanel()" id="btnToggleControl" class="bg-slate-800 hover:bg-slate-700 text-amber-400 text-xs font-bold py-2 px-4 rounded-xl border border-slate-700 shadow transition flex items-center gap-2">
+            <i class="fa-solid fa-eye-slash"></i> Hide Control Panel (For Full Stream View)
+        </button>
+    </div>
+
+    <!-- 🌟 CONTROL PANEL SECTION (HIDDEN OR SHOWN BY BUTTON / PRISM VIEW) -->
     <section id="controlPanelSection" class="bg-slate-900/95 backdrop-blur-xl p-5 rounded-2xl border border-slate-800 shadow-2xl space-y-5">
         <div class="flex justify-between items-center border-b border-slate-800 pb-3">
             <h2 class="text-sm font-extrabold uppercase tracking-widest text-slate-200 flex items-center gap-2">
@@ -486,6 +493,18 @@
         };
 
         let lastWicketInfo = "None";
+
+        function toggleControlPanel() {
+            const panel = document.getElementById('controlPanelSection');
+            const btn = document.getElementById('btnToggleControl');
+            if (panel.classList.contains('hidden')) {
+                panel.classList.remove('hidden');
+                btn.innerHTML = `<i class="fa-solid fa-eye-slash"></i> Hide Control Panel (For Full Stream View)`;
+            } else {
+                panel.classList.add('hidden');
+                btn.innerHTML = `<i class="fa-solid fa-eye"></i> Show Control Panel`;
+            }
+        }
 
         function handleImageUpload(event, key) {
             const file = event.target.files[0];
@@ -803,7 +822,6 @@
             state.bowler.runsConceded += runVal;
 
             if (type === 'wicket') {
-                // AUTOMATIC LAST WICKET CAPTURE
                 lastWicketInfo = `${state.striker.name} ${state.striker.runs}(${state.striker.balls}b)`;
                 
                 state.wickets += 1;
